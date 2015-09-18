@@ -59,6 +59,11 @@ window.onload = function(){
 	};
 
 	var view = {
+		catNameDOM: document.getElementById("name"),
+		catImageDOM: document.getElementById("image"),
+		catClicksDOM: document.getElementById("click-amount"),
+		catsListDOM: document.getElementById("cats-list"),
+
 		init: function() {
 
 			document.addEventListener("click", function(e) {
@@ -76,21 +81,17 @@ window.onload = function(){
 
 		},
 		renderCatsList: function() {
-			var catsListDOM = document.getElementById("cats-list");
 			var catHTML = ""
 			octopus.getCatsList().map(function(cat) {
 				catHTML += '<li class="cat-name">' + cat.name + '</div>'
 			});
-			catsListDOM.innerHTML = catHTML;
+			this.catsListDOM.innerHTML = catHTML;
 		},
 		renderActiveCat: function(catName) {
-			var catNameDOM = document.getElementById("name");
-			var catImageDOM = document.getElementById("image");
-			var catClicksDOM = document.getElementById("click-amount");
-
-			catNameDOM.innerHTML = model.activeCat.name;
-			catImageDOM.style.backgroundImage = "url('img/" + model.activeCat.name.toLowerCase() + ".jpg')";
-			catClicksDOM.innerHTML = model.activeCat.clickAmount;
+			var thisCat = octopus.getActiveCat();
+			this.catNameDOM.innerHTML = thisCat.name;
+			this.catImageDOM.style.backgroundImage = "url('img/" + thisCat.name.toLowerCase() + ".jpg')";
+			this.catClicksDOM.innerHTML = thisCat.clickAmount;
 		}
 	};
 
