@@ -43,12 +43,18 @@ window.onload = function(){
 			view.renderActiveCat(model.activeCat.name);
 		},
 		setActiveCat: function(catName) {
-			model.catsList.map(function(cat) {
+			this.getCatsList().map(function(cat) {
 				if (catName === cat.name) {
 					model.activeCat =  cat;
 				}
 			});
 			view.renderActiveCat(model.activeCat.name);
+		},
+		getCatsList: function() {
+			return model.catsList;
+		},
+		getActiveCat: function() {
+			return model.activeCat;
 		}
 	};
 
@@ -66,13 +72,13 @@ window.onload = function(){
 			});
 
 			view.renderCatsList();
-			view.renderActiveCat(model.activeCat.name);
+			view.renderActiveCat(octopus.getActiveCat().name);
 
 		},
 		renderCatsList: function() {
 			var catsListDOM = document.getElementById("cats-list");
 			var catHTML = ""
-			model.catsList.map(function(cat) {
+			octopus.getCatsList().map(function(cat) {
 				catHTML += '<li class="cat-name">' + cat.name + '</div>'
 			});
 			catsListDOM.innerHTML = catHTML;
