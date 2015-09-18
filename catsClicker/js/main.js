@@ -1,70 +1,93 @@
-var catsList = [{
-	"name": "Doraemon", 
-	"clickAmount": 0
-},{
-	"name": "Chi", 
-	"clickAmount": 0
-},{
-	"name": "Salem", 
-	"clickAmount": 0
-},{
-	"name": "Tom", 
-	"clickAmount": 0
-},{
-	"name": "Jiji", 
-	"clickAmount": 0
-}];
-
-// set Doraemon as initial cat
-var activeCat = {};
-
-document.addEventListener("click", function(e) {
-	if (e.target.classList.contains("cat-name")) {
-		activeCat = setActiveCat(e.target.innerHTML);
-	}
-});
-
-document.getElementById("image").addEventListener("click", function(e) {
-	var currentCat = e.target.innerHTML.toLowerCase();
-	updateClickAmount(activeCat);
-});
-
-var updateClickAmount = function(catObj) {
-	catObj.clickAmount++;
-	var tempCatName = catObj.name.charAt(0).toUpperCase() + catObj.name.slice(1);
-	catsList.map(function(data){
-		if (tempCatName === data.name) {
-			data = catObj;
+window.onload = function(){
+	
+	var model = {
+		init: function() {
+			this.catsList = [
+				{
+					"name": "Doraemon", 
+					"clickAmount": 0
+				},
+				{
+					"name": "Chi", 
+					"clickAmount": 0
+				},
+				{
+					"name": "Salem", 
+					"clickAmount": 0
+				},
+				{
+					"name": "Tom", 
+					"clickAmount": 0
+				},
+				{
+					"name": "Jiji", 
+					"clickAmount": 0
+				}
+			];
+			octopus.setActiveCat(this.catsList[0].name);
+		},
+		updateClickAmount: function() {
+			model.activeCat.clickAmount++;
+				model.catsList.map(function(data){
+					if (model.activeCat.name === data.name) {
+						data = model.activeCat;
+					}
+				});
+			view.renderActiveCat(model.activeCat.name);
 		}
-	});
-	var catClicksDOM = document.getElementById("click-amount");
-	catClicksDOM.innerHTML = catObj.clickAmount;
+	};
+
+	var octopus = {
+		init: function() {
+			model.init();
+			view.init();
+		},
+		setActiveCat: function(catName) {
+			model.catsList.map(function(cat) {
+				if (catName === cat.name) {
+					model.activeCat =  cat;
+				}
+			});
+			view.renderActiveCat(model.activeCat.name);
+		}
+	};
+
+	var view = {
+		init: function() {
+
+			document.addEventListener("click", function(e) {
+				if (e.target.classList.contains("cat-name")) {
+					octopus.setActiveCat(e.target.innerHTML);
+				}
+			});
+
+			document.getElementById("image").addEventListener("click", function(e) {
+				model.updateClickAmount();
+			});
+
+			view.renderCatsList();
+			view.renderActiveCat(model.activeCat.name);
+
+		},
+		renderCatsList: function() {
+			var catsListDOM = document.getElementById("cats-list");
+			var catHTML = ""
+			model.catsList.map(function(cat) {
+				catHTML += '<li class="cat-name">' + cat.name + '</div>'
+			});
+			catsListDOM.innerHTML = catHTML;
+		},
+		renderActiveCat: function(catName) {
+			var catNameDOM = document.getElementById("name");
+			var catImageDOM = document.getElementById("image");
+			var catClicksDOM = document.getElementById("click-amount");
+
+			catNameDOM.innerHTML = model.activeCat.name;
+			catImageDOM.style.backgroundImage = "url('img/" + model.activeCat.name.toLowerCase() + ".jpg')";
+			catClicksDOM.innerHTML = model.activeCat.clickAmount;
+		}
+	};
+
+	octopus.init();
 
 };
-
-var setActiveCat = function(catName){
-	// display stuff 
-	var catNameDOM = document.getElementById("name");
-	var catImageDOM = document.getElementById("image");
-	var catClicksDOM = document.getElementById("click-amount");
-
-	var tempCatName = catName.charAt(0).toUpperCase() + catName.slice(1);
-
-	var catObj = {};
-
-	catsList.map(function(data){
-		if (tempCatName === data.name) {
-			console.log(data);
-			catObj = data
-		}
-	});
-
-	catNameDOM.innerHTML = catObj.name;
-	catImageDOM.style.backgroundImage = "url('img/" + catObj.name.toLowerCase() + ".jpg')";
-	catClicksDOM.innerHTML = catObj.clickAmount;
-
-	// then return obj
-	return catObj; 
-};
-
-var activeCat = setActiveCat("Doraemon");
