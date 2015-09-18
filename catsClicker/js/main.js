@@ -1,5 +1,5 @@
 window.onload = function(){
-	
+
 	var model = {
 		init: function() {
 			this.catsList = [
@@ -25,6 +25,13 @@ window.onload = function(){
 				}
 			];
 			octopus.setActiveCat(this.catsList[0].name);
+		}
+	};
+
+	var octopus = {
+		init: function() {
+			model.init();
+			view.init();
 		},
 		updateClickAmount: function() {
 			model.activeCat.clickAmount++;
@@ -34,13 +41,6 @@ window.onload = function(){
 					}
 				});
 			view.renderActiveCat(model.activeCat.name);
-		}
-	};
-
-	var octopus = {
-		init: function() {
-			model.init();
-			view.init();
 		},
 		setActiveCat: function(catName) {
 			model.catsList.map(function(cat) {
@@ -62,7 +62,7 @@ window.onload = function(){
 			});
 
 			document.getElementById("image").addEventListener("click", function(e) {
-				model.updateClickAmount();
+				octopus.updateClickAmount();
 			});
 
 			view.renderCatsList();
